@@ -150,9 +150,9 @@
               <a class="button button-outline" href="https://github.com/fernandofsantosdev-source" target="_blank" rel="noreferrer">
                 <svg class="icon"><use href="#icon-github"></use></svg> GitHub
               </a>
-              <button class="button button-outline resume-button" type="button" disabled aria-describedby="resume-note">Baixar currículo <span aria-hidden="true">↓</span></button>
+              <a class="button button-outline resume-button" id="resume-link" href="#" hidden>Baixar currículo <span aria-hidden="true">↓</span></a>
             </div>
-            <p class="resume-note" id="resume-note">Currículo em PDF ainda não disponível.</p>
+            <p class="resume-note" id="resume-note" hidden></p>
           </div>
 
           <aside class="hero-visual reveal" aria-label="Tecnologias e áreas em desenvolvimento">
@@ -189,7 +189,7 @@
             </a>
           </header>
           <div class="projects-grid">
-            <article class="project-showcase-card reveal">
+            <article class="project-showcase-card reveal" data-repository="">
               <div class="project-card-heading">
                 <span class="project-icon" aria-hidden="true"><svg class="icon"><use href="#icon-code"></use></svg></span>
                 <div class="project-mini-preview tests-preview" aria-hidden="true">
@@ -204,12 +204,12 @@
                 <li>Python</li><li>Selenium</li><li>HTML</li><li>CSS</li>
               </ul>
               <div class="project-card-actions">
-                <a class="button button-outline" href="https://github.com/fernandofsantosdev-source" target="_blank" rel="noreferrer"><svg class="icon"><use href="#icon-github"></use></svg> Meu GitHub</a>
+                <a class="button button-outline project-repository-link" href="#" target="_blank" rel="noreferrer" hidden><svg class="icon"><use href="#icon-github"></use></svg> Ver repositório</a>
                 <a class="button button-outline" href="#contato">Contato <svg class="icon"><use href="#icon-arrow"></use></svg></a>
               </div>
             </article>
 
-            <article class="project-showcase-card reveal">
+            <article class="project-showcase-card reveal" data-repository="">
               <div class="project-card-heading">
                 <span class="project-icon" aria-hidden="true"><svg class="icon"><use href="#icon-briefcase"></use></svg></span>
                 <div class="project-mini-preview finance-preview" aria-hidden="true">
@@ -224,12 +224,12 @@
                 <li>Python</li><li>SQLite</li><li>PyQt</li><li>Pandas</li>
               </ul>
               <div class="project-card-actions">
-                <a class="button button-outline" href="https://github.com/fernandofsantosdev-source" target="_blank" rel="noreferrer"><svg class="icon"><use href="#icon-github"></use></svg> Meu GitHub</a>
+                <a class="button button-outline project-repository-link" href="#" target="_blank" rel="noreferrer" hidden><svg class="icon"><use href="#icon-github"></use></svg> Ver repositório</a>
                 <a class="button button-outline" href="#contato">Contato <svg class="icon"><use href="#icon-arrow"></use></svg></a>
               </div>
             </article>
 
-            <article class="project-showcase-card reveal">
+            <article class="project-showcase-card reveal" data-repository="">
               <div class="project-card-heading">
                 <span class="project-icon" aria-hidden="true"><svg class="icon"><use href="#icon-folder"></use></svg></span>
                 <div class="project-mini-preview sales-preview" aria-hidden="true">
@@ -244,12 +244,12 @@
                 <li>Python</li><li>Power BI</li><li>SQL</li><li>Matplotlib</li>
               </ul>
               <div class="project-card-actions">
-                <a class="button button-outline" href="https://github.com/fernandofsantosdev-source" target="_blank" rel="noreferrer"><svg class="icon"><use href="#icon-github"></use></svg> Meu GitHub</a>
+                <a class="button button-outline project-repository-link" href="#" target="_blank" rel="noreferrer" hidden><svg class="icon"><use href="#icon-github"></use></svg> Ver repositório</a>
                 <a class="button button-outline" href="#contato">Contato <svg class="icon"><use href="#icon-arrow"></use></svg></a>
               </div>
             </article>
           </div>
-          <p class="projects-note reveal">Os projetos estão em desenvolvimento ou planejados; novos repositórios e demonstrações serão vinculados quando publicados.</p>
+          <p class="projects-note reveal" hidden></p>
         </div>
       </section>
 
@@ -279,9 +279,14 @@
               </li>
             </ol>
           </div>
-          <aside class="trajectory-quote reveal" aria-label="O conhecimento é o código que transforma planos em oportunidades.">
-            <span class="quote-mark" aria-hidden="true">“</span>
-            <blockquote>O conhecimento<br>é o código que<br>transforma planos<br>em oportunidades.</blockquote>
+          <aside class="trajectory-quote reveal" aria-label="Formação, estudos e áreas de interesse">
+            <p class="section-kicker">FOCO ATUAL</p>
+            <ul class="trajectory-focus-list">
+              <li><span>Formação</span><strong>Estudante de ADS</strong><small>Em formação</small></li>
+              <li><span>Prática</span><strong>Estudos e projetos pessoais</strong><small>Em andamento</small></li>
+              <li><span>Interesses</span><strong>Desenvolvimento web e qualidade de software</strong></li>
+            </ul>
+            <blockquote>“O conhecimento é o código que transforma planos em oportunidades.”</blockquote>
             <span class="quote-rule" aria-hidden="true"></span>
             <svg class="trajectory-network" viewBox="0 0 360 170" aria-hidden="true">
               <path class="network-line" d="M0 148 45 132 83 145 121 112 158 130 194 93 227 113 266 71 302 86 360 35"/>
@@ -345,46 +350,46 @@
                   <p class="section-kicker">APRENDIZADO EM TECNOLOGIA</p>
                   <h3 id="technology-heading">Tecnologias e ferramentas</h3>
                   <ul class="skills-legend" aria-label="Estados de aprendizado">
-                    <li><i class="legend-practice"></i> Em prática</li>
-                    <li><i class="legend-study"></i> Em estudo</li>
+                    <li><i class="legend-practice" aria-hidden="true"></i> Em prática</li>
+                    <li><i class="legend-study" aria-hidden="true"></i> Em estudo</li>
                   </ul>
                 </div>
                 <div class="technology-groups">
                   <article class="technology-group reveal">
                     <h4>Linguagens</h4>
                     <ul>
-                      <li><span class="technology-glyph glyph-python" aria-hidden="true">Py</span><span>Python</span><small class="status-practice">Em prática</small></li>
-                      <li><span class="technology-glyph glyph-js" aria-hidden="true">JS</span><span>JavaScript</span><small class="status-practice">Em prática</small></li>
+                      <li><span>Python</span><span class="technology-status status-practice" role="img" aria-label="Em prática"></span></li>
+                      <li><span>JavaScript</span><span class="technology-status status-practice" role="img" aria-label="Em prática"></span></li>
                     </ul>
                   </article>
                   <article class="technology-group reveal">
                     <h4>Desenvolvimento web</h4>
                     <ul>
-                      <li><span class="technology-glyph glyph-html" aria-hidden="true">5</span><span>HTML / CSS</span><small class="status-practice">Em prática</small></li>
+                      <li><span>HTML / CSS</span><span class="technology-status status-practice" role="img" aria-label="Em prática"></span></li>
                     </ul>
                   </article>
                   <article class="technology-group reveal">
                     <h4>Banco de dados</h4>
                     <ul>
-                      <li><span class="technology-glyph glyph-sql" aria-hidden="true">SQL</span><span>SQL</span><small class="status-study">Em estudo</small></li>
+                      <li><span>SQL</span><span class="technology-status status-study" role="img" aria-label="Em estudo"></span></li>
                     </ul>
                   </article>
                   <article class="technology-group reveal">
                     <h4>Testes e QA</h4>
                     <ul>
-                      <li><span class="technology-glyph glyph-selenium" aria-hidden="true">S</span><span>Selenium</span><small class="status-practice">Em prática</small></li>
+                      <li><span>Selenium</span><span class="technology-status status-practice" role="img" aria-label="Em prática"></span></li>
                     </ul>
                   </article>
                   <article class="technology-group reveal">
                     <h4>Versionamento</h4>
                     <ul>
-                      <li><span class="technology-glyph glyph-git" aria-hidden="true">◆</span><span>Git / GitHub</span><small class="status-practice">Em prática</small></li>
+                      <li><span>Git / GitHub</span><span class="technology-status status-practice" role="img" aria-label="Em prática"></span></li>
                     </ul>
                   </article>
                   <article class="technology-group reveal">
                     <h4>Ferramentas</h4>
                     <ul>
-                      <li><span class="technology-glyph glyph-vscode" aria-hidden="true">&lt;&gt;</span><span>VS Code</span><small class="status-practice">Em prática</small></li>
+                      <li><span>VS Code</span><span class="technology-status status-practice" role="img" aria-label="Em prática"></span></li>
                     </ul>
                   </article>
                 </div>
@@ -407,8 +412,7 @@
             </div>
           </div>
           <footer class="skills-next">
-            <a class="skills-footer-mark" href="#inicio" aria-label="Voltar ao início">FS</a>
-            <a class="skills-next-link" href="#sobre">PRÓXIMA SEÇÃO: SOBRE MIM <svg class="icon"><use href="#icon-arrow"></use></svg></a>
+            <a class="skills-next-link" href="#sobre">Próxima seção: Sobre mim <svg class="icon"><use href="#icon-arrow"></use></svg></a>
           </footer>
         </div>
       </section>
@@ -416,22 +420,14 @@
       <section class="cinematic-section about-section" id="sobre" aria-labelledby="about-title">
         <div class="section-inner about-inner">
           <header class="section-heading reveal">
-            <p class="section-kicker">04 — SOBRE MIM</p>
+            <p class="section-kicker">SOBRE MIM</p>
             <h2 id="about-title" class="cinematic-title"><span>Prazer,</span><span>Fernando<span class="title-period">.</span></span></h2>
           </header>
           <div class="about-layout">
-            <div class="presentation-player reveal" id="presentation-player">
+            <div class="presentation-player reveal" id="presentation-player" hidden>
               <video class="presentation-video" controls preload="none" playsinline aria-label="Vídeo de apresentação pessoal" hidden></video>
-              <div class="video-placeholder">
-                <span class="video-monogram" aria-hidden="true">FS<span>.</span></span>
-                <p>Meu vídeo de apresentação</p>
-                <label class="button button-outline video-select">
-                  <input class="video-file-input" type="file" accept="video/mp4,video/webm,video/quicktime">
-                  Escolher vídeo para pré-visualizar
-                </label>
-                <small>O arquivo será reproduzido apenas nesta sessão. Para publicá-lo no portfólio, adicione o vídeo ao projeto.</small>
-              </div>
-              <span class="video-caption">APRESENTAÇÃO PESSOAL</span>
+              <img class="presentation-photo" alt="" hidden>
+              <span class="video-caption" hidden>APRESENTAÇÃO PESSOAL</span>
             </div>
             <div class="about-copy reveal">
               <p class="section-kicker">UM POUCO SOBRE MIM</p>
@@ -453,15 +449,19 @@
 
       <section class="cinematic-section contact-section" id="contato" aria-labelledby="contact-title">
         <div class="section-inner contact-inner">
-          <p class="section-kicker reveal">05 — CONTATO</p>
+          <p class="section-kicker reveal">CONTATO</p>
           <h2 id="contact-title" class="contact-title reveal"><span>O próximo</span><span>capítulo começa</span><span>com uma conversa<span class="title-period">.</span></span></h2>
           <p class="contact-lead reveal">Busco minha primeira oportunidade em TI. Será um prazer conversar.</p>
-          <a class="contact-github reveal" href="https://github.com/fernandofsantosdev-source" target="_blank" rel="noreferrer">
-            <svg class="icon"><use href="#icon-github"></use></svg>
-            <span>Conheça meu GitHub</span>
-            <svg class="icon arrow-icon"><use href="#icon-arrow"></use></svg>
-          </a>
-          <p class="contact-note reveal">E-mail e LinkedIn ainda não foram informados.</p>
+          <div class="contact-links reveal">
+            <a class="contact-github" href="https://github.com/fernandofsantosdev-source" target="_blank" rel="noreferrer">
+              <svg class="icon"><use href="#icon-github"></use></svg>
+              <span>Conheça meu GitHub</span>
+              <svg class="icon arrow-icon"><use href="#icon-arrow"></use></svg>
+            </a>
+            <a class="contact-link contact-email" href="#" hidden><span>E-mail</span></a>
+            <a class="contact-link contact-linkedin" href="#" target="_blank" rel="noreferrer" hidden><span>LinkedIn</span></a>
+          </div>
+          <p class="contact-note reveal" hidden></p>
           <span class="contact-sigil" aria-hidden="true">FS</span>
           <footer class="cinematic-footer">
             <a class="footer-brand" href="#inicio">FS</a>

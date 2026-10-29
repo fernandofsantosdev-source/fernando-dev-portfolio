@@ -27,7 +27,7 @@ const certificateDetails = new Map([
       dialogTitle: "A Jornada do Profissional de QA",
       kind: "Qualidade de software",
       description: "Certificado em PDF",
-      status: "Certificado disponível",
+      status: "Concluído",
     },
   ],
 ]);

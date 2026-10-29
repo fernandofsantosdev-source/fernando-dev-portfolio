@@ -25,6 +25,110 @@ const welcomeScreen = document.querySelector("#welcome-screen");
 const welcomeSkip = document.querySelector(".welcome-skip");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const welcomeFadeDuration = reducedMotion ? 1 : 450;
+const portfolioConfig = {
+  resumeUrl: "",
+  email: "",
+  linkedin: "",
+  presentation: {
+    type: "",
+    src: "",
+    alt: "",
+  },
+};
+
+function setConfiguredUrl(link, value, label) {
+  const configuredValue = value.trim();
+  if (!configuredValue) {
+    return false;
+  }
+
+  try {
+    const url = new URL(configuredValue, window.location.href);
+    if (!["https:", "http:"].includes(url.protocol)) {
+      console.error(`O link de ${label} precisa usar HTTP ou HTTPS.`);
+      return false;
+    }
+
+    link.href = url.href;
+    link.hidden = false;
+    return true;
+  } catch (error) {
+    console.error(`O link configurado para ${label} não é uma URL válida.`, error);
+    return false;
+  }
+}
+
+function configurePortfolioLinks() {
+  setConfiguredUrl(document.querySelector("#resume-link"), portfolioConfig.resumeUrl, "currículo");
+
+  document.querySelectorAll(".project-showcase-card").forEach((card) => {
+    const repositoryLink = card.querySelector(".project-repository-link");
+    setConfiguredUrl(repositoryLink, card.dataset.repository ?? "", "repositório do projeto");
+  });
+
+  const email = portfolioConfig.email.trim();
+  if (email) {
+    const emailLink = document.querySelector(".contact-email");
+    emailLink.href = `mailto:${email}`;
+    emailLink.hidden = false;
+  }
+
+  setConfiguredUrl(document.querySelector(".contact-linkedin"), portfolioConfig.linkedin, "LinkedIn");
+}
+
+function configurePresentationMedia() {
+  const presentationPlayer = document.querySelector(".presentation-player");
+  const aboutLayout = document.querySelector(".about-layout");
+  const { type, src, alt } = portfolioConfig.presentation;
+
+  if (!src) {
+    aboutLayout.classList.add("is-copy-only");
+    return;
+  }
+
+  let mediaUrl;
+  try {
+    mediaUrl = new URL(src, window.location.href);
+  } catch (error) {
+    console.error("O caminho do vídeo ou da foto de apresentação não é válido.", error);
+    aboutLayout.classList.add("is-copy-only");
+    return;
+  }
+
+  if (!["http:", "https:", "file:"].includes(mediaUrl.protocol)) {
+    console.error("A mídia de apresentação precisa usar um arquivo local ou uma URL HTTP/HTTPS.");
+    aboutLayout.classList.add("is-copy-only");
+    return;
+  }
+
+  if (type === "video") {
+    const video = presentationPlayer.querySelector(".presentation-video");
+    video.src = mediaUrl.href;
+    video.hidden = false;
+  } else if (type === "photo") {
+    if (!alt.trim()) {
+      console.error("Informe um texto alternativo para a foto de apresentação.");
+      aboutLayout.classList.add("is-copy-only");
+      return;
+    }
+
+    const photo = presentationPlayer.querySelector(".presentation-photo");
+    photo.src = mediaUrl.href;
+    photo.alt = alt.trim();
+    photo.hidden = false;
+  } else {
+    console.error('O tipo de mídia de apresentação deve ser "video" ou "photo".');
+    aboutLayout.classList.add("is-copy-only");
+    return;
+  }
+
+  presentationPlayer.hidden = false;
+  presentationPlayer.querySelector(".video-caption").hidden = false;
+  aboutLayout.classList.remove("is-copy-only");
+}
+
+configurePortfolioLinks();
+configurePresentationMedia();
 
 function setActiveNavigation(hash) {
   sectionLinks.forEach((link) => {
@@ -162,9 +266,9 @@ function renderFormationCertificates(certificates) {
     const card = document.createElement("article");
     card.className = "formation-card";
 
-    const isCompletedCourse = certificate.status === "Concluído";
+    const isCompleted = certificate.status === "Concluído";
     const status = document.createElement("p");
-    status.className = `formation-status ${isCompletedCourse ? "formation-status-complete" : "formation-status-available"}`;
+    status.className = `formation-status ${isCompleted ? "formation-status-complete" : "formation-status-available"}`;
     status.textContent = certificate.status ?? "Certificado disponível";
 
     const provider = document.createElement("div");
@@ -182,14 +286,16 @@ function renderFormationCertificates(certificates) {
       const mark = document.createElement("span");
       mark.className = "formation-provider-mark";
       mark.setAttribute("aria-hidden", "true");
-      mark.textContent = "PDF";
+      mark.textContent = certificate.kind === "Qualidade de software" ? "QA" : "PDF";
       provider.append(mark);
     }
 
-    const institution = document.createElement("span");
-    institution.className = "formation-institution";
-    institution.textContent = certificate.institution ?? "Instituição não informada";
-    provider.append(institution);
+    if (certificate.institution) {
+      const institution = document.createElement("span");
+      institution.className = "formation-institution";
+      institution.textContent = certificate.institution;
+      provider.append(institution);
+    }
 
     const title = document.createElement("h4");
     title.textContent = certificate.title;
@@ -416,34 +522,6 @@ window.addEventListener("resize", updateScrollEffects);
 window.addEventListener("hashchange", updateScrollEffects);
 window.addEventListener("load", updateScrollEffects, { once: true });
 updateScrollEffects();
-
-const videoInput = document.querySelector(".video-file-input");
-const presentationVideo = document.querySelector(".presentation-video");
-const videoPlaceholder = document.querySelector(".video-placeholder");
-let localVideoUrl;
-
-videoInput.addEventListener("change", () => {
-  const [file] = videoInput.files;
-  if (!file) {
-    return;
-  }
-
-  if (localVideoUrl) {
-    URL.revokeObjectURL(localVideoUrl);
-  }
-
-  localVideoUrl = URL.createObjectURL(file);
-  presentationVideo.src = localVideoUrl;
-  presentationVideo.hidden = false;
-  videoPlaceholder.hidden = true;
-  presentationVideo.load();
-});
-
-window.addEventListener("pagehide", () => {
-  if (localVideoUrl) {
-    URL.revokeObjectURL(localVideoUrl);
-  }
-});
 
 themeToggle.addEventListener("click", () => {
   const isLight = document.body.classList.toggle("light-theme");
