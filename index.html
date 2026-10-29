@@ -9,6 +9,7 @@
     >
     <meta name="theme-color" content="#08090b">
     <title>Fernando Santos | Portfólio</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -16,9 +17,12 @@
       rel="stylesheet"
     >
     <link rel="stylesheet" href="styles.css">
+    <script src="certificados/catalogo.js" defer></script>
     <script src="script.js" defer></script>
   </head>
   <body>
+    <div class="page-progress" aria-hidden="true"><span></span></div>
+    <div class="scroll-atmosphere" aria-hidden="true"><i></i><i></i><i></i></div>
     <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       <symbol id="icon-github" viewBox="0 0 24 24">
         <path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.76-1.32-3.76-1.32-.5-1.3-1.24-1.64-1.24-1.64-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15.99 1.7 2.6 1.21 3.23.93.1-.72.39-1.21.7-1.49-2.48-.28-5.09-1.24-5.09-5.52 0-1.22.44-2.22 1.15-3-.12-.29-.5-1.42.11-2.96 0 0 .94-.3 3.06 1.15a10.65 10.65 0 0 1 5.57 0c2.13-1.45 3.06-1.15 3.06-1.15.61 1.54.23 2.67.11 2.96.72.78 1.15 1.78 1.15 3 0 4.29-2.61 5.23-5.1 5.5.4.35.76 1.03.76 2.08v3.09c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/>
@@ -44,23 +48,12 @@
         <path d="M3 6a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>
         <path d="M3 9h18"/>
       </symbol>
-      <symbol id="icon-calendar" viewBox="0 0 24 24">
-        <rect x="3" y="5" width="18" height="16" rx="2"/>
-        <path d="M16 3v4M8 3v4M3 11h18"/>
-      </symbol>
-      <symbol id="icon-pin" viewBox="0 0 24 24">
-        <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/>
-        <circle cx="12" cy="10" r="2.5"/>
-      </symbol>
       <symbol id="icon-briefcase" viewBox="0 0 24 24">
         <rect x="3" y="7" width="18" height="14" rx="2"/>
         <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18m-11 0v2h4v-2"/>
       </symbol>
       <symbol id="icon-arrow" viewBox="0 0 24 24">
         <path d="M5 12h14m-7-7 7 7-7 7"/>
-      </symbol>
-      <symbol id="icon-download" viewBox="0 0 24 24">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m4-5 5 5 5-5m-5 5V3"/>
       </symbol>
       <symbol id="icon-spark" viewBox="0 0 24 24">
         <path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3Zm7 12 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z"/>
@@ -69,6 +62,22 @@
         <path d="m18 6-12 12M6 6l12 12"/>
       </symbol>
     </svg>
+
+    <dialog
+      class="welcome-screen"
+      id="welcome-screen"
+      aria-labelledby="welcome-title"
+      aria-describedby="welcome-description"
+    >
+      <div class="welcome-card">
+        <span class="welcome-mark" aria-hidden="true">F<span>S</span></span>
+        <p class="eyebrow">PORTFÓLIO PESSOAL</p>
+        <h2 id="welcome-title">Bem-vindo<span>.</span></h2>
+        <p class="welcome-message" id="welcome-description">Que bom ter você por aqui.</p>
+        <div class="welcome-loader" aria-hidden="true"><span></span></div>
+        <button class="welcome-skip" type="button">Pular introdução</button>
+      </div>
+    </dialog>
 
     <header class="site-header">
       <div class="header-inner">
@@ -91,10 +100,11 @@
         </button>
 
         <nav class="main-nav" id="primary-navigation" aria-label="Navegação principal">
-          <a class="nav-link is-active" href="#inicio">Início</a>
-          <a class="nav-link" href="#sobre">Sobre mim</a>
+          <a class="nav-link is-active" href="#inicio" aria-current="location">Início</a>
           <a class="nav-link" href="#projetos">Projetos</a>
-          <a class="nav-link" href="#habilidades">Habilidades</a>
+          <a class="nav-link" href="#trajetoria">Trajetória</a>
+          <a class="nav-link" href="#habilidades">Tecnologias &amp; Formação</a>
+          <a class="nav-link" href="#sobre">Sobre</a>
           <a class="nav-link" href="#contato">Contato</a>
         </nav>
 
@@ -115,227 +125,358 @@
       </div>
     </header>
 
-    <main>
-      <section class="hero section-wrap" id="inicio" aria-labelledby="hero-title">
-        <div class="hero-content">
-          <p class="eyebrow">Olá, eu sou</p>
-          <h1 id="hero-title">Fernando <span>Santos</span></h1>
-          <p class="hero-role">Estudante de Análise e Desenvolvimento de Sistemas</p>
-          <p class="hero-description">
-            Apaixonado por tecnologia e em constante evolução. Estou construindo meu
-            conhecimento em desenvolvimento de software, testes de qualidade (QA),
-            bancos de dados e soluções que unem tecnologia e praticidade.
-          </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#projetos">
-              <svg class="icon"><use href="#icon-spark"></use></svg>
-              Ver meus projetos
+    <nav class="section-rail" aria-label="Navegação por seção">
+      <a class="rail-link is-active" href="#inicio" aria-label="Ir para Início" aria-current="location"><span>01</span></a>
+      <a class="rail-link" href="#projetos" aria-label="Ir para Projetos"><span>02</span></a>
+      <a class="rail-link" href="#trajetoria" aria-label="Ir para Trajetória"><span>03</span></a>
+      <a class="rail-link" href="#habilidades" aria-label="Ir para Habilidades"><span>04</span></a>
+      <a class="rail-link" href="#sobre" aria-label="Ir para Sobre mim"><span>05</span></a>
+      <a class="rail-link" href="#contato" aria-label="Ir para Contato"><span>06</span></a>
+    </nav>
+
+    <main class="cinematic-main">
+      <section class="cinematic-section hero-panel" id="inicio" aria-labelledby="hero-title">
+        <div class="section-inner hero-inner">
+          <div class="hero-content reveal">
+            <p class="eyebrow">Olá, meu nome é</p>
+            <h1 id="hero-title" class="hero-title"><span>Fernando</span><span>Santos</span></h1>
+            <p class="hero-role">Estudante de Análise e Desenvolvimento de Sistemas</p>
+            <p class="hero-description">
+              Em constante evolução, construindo minha carreira em TI e buscando oportunidades
+              para aplicar e desenvolver minhas habilidades em projetos reais.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#projetos">Ver projetos <svg class="icon"><use href="#icon-arrow"></use></svg></a>
+              <a class="button button-outline" href="https://github.com/fernandofsantosdev-source" target="_blank" rel="noreferrer">
+                <svg class="icon"><use href="#icon-github"></use></svg> GitHub
+              </a>
+              <button class="button button-outline resume-button" type="button" disabled aria-describedby="resume-note">Baixar currículo <span aria-hidden="true">↓</span></button>
+            </div>
+            <p class="resume-note" id="resume-note">Currículo em PDF ainda não disponível.</p>
+          </div>
+
+          <aside class="hero-visual reveal" aria-label="Tecnologias e áreas em desenvolvimento">
+            <div class="hero-code">
+              <div class="hero-code-mark" aria-hidden="true">&lt;/&gt;</div>
+              <ul class="hero-tech-list">
+                <li>Python</li>
+                <li>JavaScript</li>
+                <li>SQL</li>
+                <li>HTML &amp; CSS</li>
+                <li>Git &amp; GitHub</li>
+                <li>Testes / QA</li>
+                <li class="hero-tech-note">Sempre aprendendo...</li>
+              </ul>
+            </div>
+            <span class="hero-cross cross-one" aria-hidden="true">+</span>
+            <span class="hero-cross cross-two" aria-hidden="true">+</span>
+          </aside>
+
+          <a class="scroll-cue" href="#projetos"><span></span>Role para explorar</a>
+        </div>
+      </section>
+
+      <section class="cinematic-section projects-section" id="projetos" aria-labelledby="projects-title">
+        <div class="section-inner section-projects">
+          <header class="section-heading reveal">
+            <div class="projects-heading-copy">
+              <p class="section-kicker">MEUS PROJETOS</p>
+              <h2 id="projects-title" class="projects-title">Projetos em <span>destaque</span></h2>
+              <p class="section-lead">Conheça alguns dos projetos que estou planejando e desenvolvendo. Cada um representa uma etapa do que venho aprendendo em tecnologia.</p>
+            </div>
+            <a class="projects-all-link" href="https://github.com/fernandofsantosdev-source" target="_blank" rel="noreferrer">
+              Ver projetos no GitHub <svg class="icon"><use href="#icon-arrow"></use></svg>
             </a>
-            <button class="button button-outline download-cv" type="button">
-              <svg class="icon"><use href="#icon-download"></use></svg>
-              Baixar currículo
-            </button>
-          </div>
-        </div>
+          </header>
+          <div class="projects-grid">
+            <article class="project-showcase-card reveal">
+              <div class="project-card-heading">
+                <span class="project-icon" aria-hidden="true"><svg class="icon"><use href="#icon-code"></use></svg></span>
+                <div class="project-mini-preview tests-preview" aria-hidden="true">
+                  <span class="mini-window-bar"><i></i><i></i><i></i></span>
+                  <span class="mini-preview-body"><i></i><i></i><i></i><i></i></span>
+                </div>
+              </div>
+              <p class="project-status"><span></span> Em desenvolvimento</p>
+              <h3>Sistema de Testes Web</h3>
+              <p class="project-card-description">Plataforma para criação e execução de testes manuais e automatizados, com relatórios e exemplos de testes.</p>
+              <ul class="project-tags" aria-label="Tecnologias usadas">
+                <li>Python</li><li>Selenium</li><li>HTML</li><li>CSS</li>
+              </ul>
+              <div class="project-card-actions">
+                <a class="button button-outline" href="https://github.com/fernandofsantosdev-source" target="_blank" rel="noreferrer"><svg class="icon"><use href="#icon-github"></use></svg> Meu GitHub</a>
+                <a class="button button-outline" href="#contato">Contato <svg class="icon"><use href="#icon-arrow"></use></svg></a>
+              </div>
+            </article>
 
-        <div class="hero-art" aria-hidden="true">
-          <div class="art-glow"></div>
-          <div class="art-window">
-            <div class="window-top"><i></i><i></i><i></i><span>meu-projeto.js</span></div>
-            <div class="code-lines">
-              <span><b>01</b><i class="code-purple">const</i> desenvolvedor = {</span>
-              <span><b>02</b>&nbsp; foco: <i class="code-green">"qualidade"</i>,</span>
-              <span><b>03</b>&nbsp; aprendendo: [</span>
-              <span><b>04</b>&nbsp;&nbsp; <i class="code-orange">"JavaScript"</i>,</span>
-              <span><b>05</b>&nbsp;&nbsp; <i class="code-orange">"automação"</i></span>
-              <span><b>06</b>&nbsp; ]</span>
-              <span><b>07</b>};</span>
-            </div>
-          </div>
-          <div class="art-keyboard"></div>
-          <div class="art-cup"><span></span></div>
-          <div class="art-plant"><i></i><i></i><i></i><i></i><span></span></div>
-        </div>
+            <article class="project-showcase-card reveal">
+              <div class="project-card-heading">
+                <span class="project-icon" aria-hidden="true"><svg class="icon"><use href="#icon-briefcase"></use></svg></span>
+                <div class="project-mini-preview finance-preview" aria-hidden="true">
+                  <span class="mini-window-bar"><i></i><i></i><i></i></span>
+                  <span class="finance-preview-body"><i></i><i></i><i></i></span>
+                </div>
+              </div>
+              <p class="project-status"><span></span> Em desenvolvimento</p>
+              <h3>Assistente Financeiro Local</h3>
+              <p class="project-card-description">Aplicação desktop para controle financeiro pessoal, com análise de gastos e metas.</p>
+              <ul class="project-tags" aria-label="Tecnologias usadas">
+                <li>Python</li><li>SQLite</li><li>PyQt</li><li>Pandas</li>
+              </ul>
+              <div class="project-card-actions">
+                <a class="button button-outline" href="https://github.com/fernandofsantosdev-source" target="_blank" rel="noreferrer"><svg class="icon"><use href="#icon-github"></use></svg> Meu GitHub</a>
+                <a class="button button-outline" href="#contato">Contato <svg class="icon"><use href="#icon-arrow"></use></svg></a>
+              </div>
+            </article>
 
-        <blockquote class="hero-quote">
-          <p>“Disciplina hoje,<br>resultados amanhã.”</p>
-          <span></span>
-        </blockquote>
+            <article class="project-showcase-card reveal">
+              <div class="project-card-heading">
+                <span class="project-icon" aria-hidden="true"><svg class="icon"><use href="#icon-folder"></use></svg></span>
+                <div class="project-mini-preview sales-preview" aria-hidden="true">
+                  <span class="mini-window-bar"><i></i><i></i><i></i></span>
+                  <span class="sales-preview-body"><i></i><i></i><i></i><i></i></span>
+                </div>
+              </div>
+              <p class="project-status project-status-planned"><span></span> Planejado</p>
+              <h3>Dashboard de Vendas</h3>
+              <p class="project-card-description">Painel para visualização de dados de vendas com gráficos e indicadores.</p>
+              <ul class="project-tags" aria-label="Tecnologias usadas">
+                <li>Python</li><li>Power BI</li><li>SQL</li><li>Matplotlib</li>
+              </ul>
+              <div class="project-card-actions">
+                <a class="button button-outline" href="https://github.com/fernandofsantosdev-source" target="_blank" rel="noreferrer"><svg class="icon"><use href="#icon-github"></use></svg> Meu GitHub</a>
+                <a class="button button-outline" href="#contato">Contato <svg class="icon"><use href="#icon-arrow"></use></svg></a>
+              </div>
+            </article>
+          </div>
+          <p class="projects-note reveal">Os projetos estão em desenvolvimento ou planejados; novos repositórios e demonstrações serão vinculados quando publicados.</p>
+        </div>
       </section>
 
-      <section class="intro-section section-wrap" id="sobre">
-        <div class="about-panel">
-          <h2 class="section-title">
-            <svg class="icon"><use href="#icon-user"></use></svg>
-            Sobre mim
-          </h2>
-          <p>
-            Sou estudante de Análise e Desenvolvimento de Sistemas e estou em busca
-            da minha primeira oportunidade na área de TI. Tenho interesse em
-            desenvolvimento, QA, banco de dados e ferramentas que ajudam a criar
-            soluções eficientes. Sempre busco aprender algo novo e evoluir, tanto na
-            parte técnica quanto pessoal.
-          </p>
-          <div class="quick-facts">
-            <div class="fact">
-              <svg class="icon"><use href="#icon-calendar"></use></svg>
-              <span><strong>18 anos</strong><small>Idade</small></span>
-            </div>
-            <div class="fact">
-              <svg class="icon"><use href="#icon-pin"></use></svg>
-              <span><strong>Brasil</strong><small>Localização</small></span>
-            </div>
-            <div class="fact">
-              <svg class="icon"><use href="#icon-briefcase"></use></svg>
-              <span><strong>Em busca de</strong><small>Oportunidade em TI</small></span>
-            </div>
+      <section class="cinematic-section trajectory-section" id="trajetoria" aria-labelledby="trajectory-title">
+        <div class="section-inner trajectory-inner">
+          <div class="trajectory-copy">
+            <header class="section-heading reveal">
+              <p class="section-kicker">EXPERIÊNCIA PROFISSIONAL</p>
+              <h2 id="trajectory-title" class="trajectory-title">Minha <span>trajetória</span></h2>
+              <p class="section-lead">Minha experiência profissional ainda está em construção. Atualmente, estou focado nos estudos e no desenvolvimento de projetos para ganhar prática e evoluir na área de tecnologia.</p>
+            </header>
+            <ol class="storyline">
+              <li class="story-event reveal">
+                <span class="story-marker"><svg class="icon"><use href="#icon-briefcase"></use></svg></span>
+                <div class="story-event-copy"><h3>Estudante de ADS</h3><p>Em formação</p></div>
+                <span class="story-status">Atual</span>
+              </li>
+              <li class="story-event reveal">
+                <span class="story-marker"><svg class="icon"><use href="#icon-code"></use></svg></span>
+                <div class="story-event-copy"><h3>Estudos e projetos pessoais</h3><p>Desenvolvendo habilidades e construindo portfólio</p></div>
+                <span class="story-status">Em andamento</span>
+              </li>
+              <li class="story-event reveal">
+                <span class="story-marker"><svg class="icon"><use href="#icon-arrow"></use></svg></span>
+                <div class="story-event-copy"><h3>Primeira oportunidade em TI</h3><p>Estágio ou vaga júnior</p></div>
+                <span class="story-status">Em breve</span>
+              </li>
+            </ol>
           </div>
+          <aside class="trajectory-quote reveal" aria-label="O conhecimento é o código que transforma planos em oportunidades.">
+            <span class="quote-mark" aria-hidden="true">“</span>
+            <blockquote>O conhecimento<br>é o código que<br>transforma planos<br>em oportunidades.</blockquote>
+            <span class="quote-rule" aria-hidden="true"></span>
+            <svg class="trajectory-network" viewBox="0 0 360 170" aria-hidden="true">
+              <path class="network-line" d="M0 148 45 132 83 145 121 112 158 130 194 93 227 113 266 71 302 86 360 35"/>
+              <path class="network-line" d="M0 165 38 146 72 158 112 127 147 142 184 112 221 127 253 97 291 111 328 79 360 84"/>
+              <path class="network-line" d="m45 132-7 14m45-1-11 13m49-46-9 15m46 3-10 15m46-52-10 19m43 1-10 14m45-56-11 18m47-3-10 20"/>
+              <g class="network-points">
+                <circle cx="45" cy="132" r="2"/><circle cx="83" cy="145" r="2"/>
+                <circle cx="121" cy="112" r="2"/><circle cx="158" cy="130" r="2"/>
+                <circle cx="194" cy="93" r="2"/><circle cx="227" cy="113" r="2"/>
+                <circle cx="266" cy="71" r="2"/><circle cx="302" cy="86" r="2"/>
+                <circle cx="360" cy="35" r="2.5"/><circle cx="38" cy="146" r="2"/>
+                <circle cx="112" cy="127" r="2"/><circle cx="184" cy="112" r="2"/>
+                <circle cx="253" cy="97" r="2"/><circle cx="328" cy="79" r="2"/>
+              </g>
+            </svg>
+          </aside>
         </div>
+      </section>
 
-        <div class="skills-panel" id="habilidades">
-          <h2 class="section-title">
-            <svg class="icon code-heading"><use href="#icon-code"></use></svg>
-            Minhas principais habilidades
-          </h2>
-          <ul class="skills-grid">
-            <li class="skill-card"><span class="skill-logo python-logo">Py</span><span>Python</span></li>
-            <li class="skill-card"><span class="skill-logo js-logo">JS</span><span>JavaScript</span></li>
-            <li class="skill-card"><span class="skill-logo database-logo">▰</span><span>SQL</span></li>
-            <li class="skill-item">
+      <section class="cinematic-section skills-section" id="habilidades" aria-labelledby="skills-title">
+        <div class="section-inner skills-inner">
+          <div class="skills-hero">
+            <header class="skills-heading-copy reveal">
+              <p class="section-kicker">TECNOLOGIAS, FERRAMENTAS E APRENDIZADO</p>
+              <h2 id="skills-title" class="skills-title">Tecnologias <span>&amp; Formação</span></h2>
+              <p class="section-lead">O que estou estudando e praticando, com os cursos e certificados que posso comprovar.</p>
+            </header>
+            <span class="skills-ornament" aria-hidden="true"><span>&lt;/&gt;</span></span>
+          </div>
+          <div class="skills-content">
+            <div class="skills-tabs" role="tablist" aria-label="Tecnologias e formação">
               <button
-                class="skill-card skill-certificate"
+                class="skills-tab"
+                id="technology-tab"
                 type="button"
-                aria-label="Ver certificado de Git e GitHub"
-                aria-haspopup="dialog"
-                aria-controls="certificate-dialog"
+                role="tab"
+                aria-selected="true"
+                aria-controls="technology-panel"
+                tabindex="0"
+              >Tecnologias e ferramentas</button>
+              <button
+                class="skills-tab"
+                id="formation-tab"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="formation-panel"
+                tabindex="-1"
+              >Cursos e certificações</button>
+              <span class="skills-tab-indicator" aria-hidden="true"></span>
+            </div>
+            <div class="skills-panels">
+              <section
+                class="skills-panel"
+                id="technology-panel"
+                role="tabpanel"
+                aria-labelledby="technology-tab"
+                tabindex="0"
               >
-                <span class="skill-logo git-logo">◆</span>
-                <span>Git &amp; GitHub</span>
-                <span class="skill-certificate-indicator" aria-hidden="true">↗</span>
-              </button>
-            </li>
-            <li class="skill-card"><span class="skill-logo qa-logo">✓</span><span>QA / Testes</span></li>
-            <li class="skill-card"><span class="skill-logo html-logo">5</span><span>HTML &amp; CSS</span></li>
-            <li class="skill-card"><span class="skill-logo power-logo">▥</span><span>Power BI</span></li>
-            <li class="skill-card"><span class="skill-logo excel-logo">X</span><span>Excel</span></li>
-            <li class="skill-card"><span class="skill-logo logic-logo">&lt;/&gt;</span><span>Lógica de Programação</span></li>
-          </ul>
+                <div class="skills-subheading reveal">
+                  <p class="section-kicker">APRENDIZADO EM TECNOLOGIA</p>
+                  <h3 id="technology-heading">Tecnologias e ferramentas</h3>
+                  <ul class="skills-legend" aria-label="Estados de aprendizado">
+                    <li><i class="legend-practice"></i> Em prática</li>
+                    <li><i class="legend-study"></i> Em estudo</li>
+                  </ul>
+                </div>
+                <div class="technology-groups">
+                  <article class="technology-group reveal">
+                    <h4>Linguagens</h4>
+                    <ul>
+                      <li><span class="technology-glyph glyph-python" aria-hidden="true">Py</span><span>Python</span><small class="status-practice">Em prática</small></li>
+                      <li><span class="technology-glyph glyph-js" aria-hidden="true">JS</span><span>JavaScript</span><small class="status-practice">Em prática</small></li>
+                    </ul>
+                  </article>
+                  <article class="technology-group reveal">
+                    <h4>Desenvolvimento web</h4>
+                    <ul>
+                      <li><span class="technology-glyph glyph-html" aria-hidden="true">5</span><span>HTML / CSS</span><small class="status-practice">Em prática</small></li>
+                    </ul>
+                  </article>
+                  <article class="technology-group reveal">
+                    <h4>Banco de dados</h4>
+                    <ul>
+                      <li><span class="technology-glyph glyph-sql" aria-hidden="true">SQL</span><span>SQL</span><small class="status-study">Em estudo</small></li>
+                    </ul>
+                  </article>
+                  <article class="technology-group reveal">
+                    <h4>Testes e QA</h4>
+                    <ul>
+                      <li><span class="technology-glyph glyph-selenium" aria-hidden="true">S</span><span>Selenium</span><small class="status-practice">Em prática</small></li>
+                    </ul>
+                  </article>
+                  <article class="technology-group reveal">
+                    <h4>Versionamento</h4>
+                    <ul>
+                      <li><span class="technology-glyph glyph-git" aria-hidden="true">◆</span><span>Git / GitHub</span><small class="status-practice">Em prática</small></li>
+                    </ul>
+                  </article>
+                  <article class="technology-group reveal">
+                    <h4>Ferramentas</h4>
+                    <ul>
+                      <li><span class="technology-glyph glyph-vscode" aria-hidden="true">&lt;&gt;</span><span>VS Code</span><small class="status-practice">Em prática</small></li>
+                    </ul>
+                  </article>
+                </div>
+              </section>
+              <section
+                class="skills-panel"
+                id="formation-panel"
+                role="tabpanel"
+                aria-labelledby="formation-tab"
+                tabindex="0"
+                hidden
+              >
+                <div class="formation-heading reveal">
+                  <p class="section-kicker">APRENDIZADO COMPROVADO</p>
+                  <h3 id="formation-heading">Cursos e certificações</h3>
+                  <p>Certificados disponíveis e cursos concluídos que posso comprovar.</p>
+                </div>
+                <div class="formation-cards" id="formacao-certificados" aria-live="polite"></div>
+              </section>
+            </div>
+          </div>
+          <footer class="skills-next">
+            <a class="skills-footer-mark" href="#inicio" aria-label="Voltar ao início">FS</a>
+            <a class="skills-next-link" href="#sobre">PRÓXIMA SEÇÃO: SOBRE MIM <svg class="icon"><use href="#icon-arrow"></use></svg></a>
+          </footer>
         </div>
       </section>
 
-      <section class="projects-section section-wrap" id="projetos">
-        <div class="section-heading-row">
-          <h2 class="section-title">
-            <svg class="icon"><use href="#icon-folder"></use></svg>
-            Projetos em destaque
-          </h2>
-          <a
-            class="text-link"
-            href="https://github.com/fernandofsantosdev-source"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Ver todos os projetos
-            <svg class="icon"><use href="#icon-arrow"></use></svg>
+      <section class="cinematic-section about-section" id="sobre" aria-labelledby="about-title">
+        <div class="section-inner about-inner">
+          <header class="section-heading reveal">
+            <p class="section-kicker">04 — SOBRE MIM</p>
+            <h2 id="about-title" class="cinematic-title"><span>Prazer,</span><span>Fernando<span class="title-period">.</span></span></h2>
+          </header>
+          <div class="about-layout">
+            <div class="presentation-player reveal" id="presentation-player">
+              <video class="presentation-video" controls preload="none" playsinline aria-label="Vídeo de apresentação pessoal" hidden></video>
+              <div class="video-placeholder">
+                <span class="video-monogram" aria-hidden="true">FS<span>.</span></span>
+                <p>Meu vídeo de apresentação</p>
+                <label class="button button-outline video-select">
+                  <input class="video-file-input" type="file" accept="video/mp4,video/webm,video/quicktime">
+                  Escolher vídeo para pré-visualizar
+                </label>
+                <small>O arquivo será reproduzido apenas nesta sessão. Para publicá-lo no portfólio, adicione o vídeo ao projeto.</small>
+              </div>
+              <span class="video-caption">APRESENTAÇÃO PESSOAL</span>
+            </div>
+            <div class="about-copy reveal">
+              <p class="section-kicker">UM POUCO SOBRE MIM</p>
+              <h3>Aprender. Praticar. Evoluir.</h3>
+              <p>
+                Sou estudante de Análise e Desenvolvimento de Sistemas e estou
+                construindo minha trajetória em tecnologia. Tenho interesse em
+                desenvolvimento web e qualidade de software.
+              </p>
+              <p>
+                Busco minha primeira oportunidade em TI para aplicar o que venho
+                estudando, aprender com outras pessoas e contribuir com dedicação.
+              </p>
+              <a class="text-link" href="#contato">Vamos conversar <svg class="icon"><use href="#icon-arrow"></use></svg></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cinematic-section contact-section" id="contato" aria-labelledby="contact-title">
+        <div class="section-inner contact-inner">
+          <p class="section-kicker reveal">05 — CONTATO</p>
+          <h2 id="contact-title" class="contact-title reveal"><span>O próximo</span><span>capítulo começa</span><span>com uma conversa<span class="title-period">.</span></span></h2>
+          <p class="contact-lead reveal">Busco minha primeira oportunidade em TI. Será um prazer conversar.</p>
+          <a class="contact-github reveal" href="https://github.com/fernandofsantosdev-source" target="_blank" rel="noreferrer">
+            <svg class="icon"><use href="#icon-github"></use></svg>
+            <span>Conheça meu GitHub</span>
+            <svg class="icon arrow-icon"><use href="#icon-arrow"></use></svg>
           </a>
+          <p class="contact-note reveal">E-mail e LinkedIn ainda não foram informados.</p>
+          <span class="contact-sigil" aria-hidden="true">FS</span>
+          <footer class="cinematic-footer">
+            <a class="footer-brand" href="#inicio">FS</a>
+            <p>© <span id="current-year"></span> Fernando Santos · Estudante de ADS</p>
+            <a href="#inicio" class="back-to-top">Voltar ao início ↑</a>
+          </footer>
         </div>
-
-        <div class="projects-grid">
-          <button
-            class="project-card"
-            type="button"
-            data-project="testes"
-            aria-label="Ver detalhes do Sistema de Testes Web"
-          >
-            <span class="project-icon project-check">✓</span>
-            <svg class="icon project-arrow"><use href="#icon-arrow"></use></svg>
-            <strong>Sistema de Testes Web</strong>
-            <span class="project-description">
-              Projeto de portfólio com casos de teste, relatórios de bugs e evidências
-              de testes em uma aplicação web.
-            </span>
-            <span class="tag-list"><i>QA</i><i>Testes</i><i>Web</i></span>
-          </button>
-
-          <button
-            class="project-card"
-            type="button"
-            data-project="financeiro"
-            aria-label="Ver detalhes do Assistente Financeiro Local"
-          >
-            <span class="project-icon project-database">▤</span>
-            <svg class="icon project-arrow"><use href="#icon-arrow"></use></svg>
-            <strong>Assistente Financeiro Local</strong>
-            <span class="project-description">
-              Aplicação em Python com IA local (Ollama) para ajudar no controle
-              financeiro, com gráficos e metas.
-            </span>
-            <span class="tag-list"><i>Python</i><i>IA</i><i>SQLite</i><i>Streamlit</i></span>
-          </button>
-
-          <button
-            class="project-card"
-            type="button"
-            data-project="vendas"
-            aria-label="Ver detalhes do Dashboard de Vendas"
-          >
-            <span class="project-icon project-chart">▥</span>
-            <svg class="icon project-arrow"><use href="#icon-arrow"></use></svg>
-            <strong>Dashboard de Vendas</strong>
-            <span class="project-description">
-              Dashboard interativo em Power BI com análise de dados e insights para
-              tomada de decisão.
-            </span>
-            <span class="tag-list"><i>Power BI</i><i>Excel</i><i>SQL</i></span>
-          </button>
-        </div>
-      </section>
-
-      <section class="contact-section section-wrap" id="contato">
-        <div>
-          <p class="eyebrow">Próximo passo</p>
-          <h2>Vamos construir algo juntos?</h2>
-          <p>Estou aberto a oportunidades de estágio e projetos na área de tecnologia.</p>
-        </div>
-        <a
-          class="button button-primary"
-          href="https://github.com/fernandofsantosdev-source"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <svg class="icon"><use href="#icon-github"></use></svg>
-          Me encontre no GitHub
-        </a>
       </section>
     </main>
 
-    <footer class="site-footer">
-      <p>© <span id="current-year"></span> Fernando Santos. Todos os direitos reservados.</p>
-      <a
-        class="icon-button social-link"
-        href="https://github.com/fernandofsantosdev-source"
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Abrir perfil no GitHub"
-      >
-        <svg class="icon"><use href="#icon-github"></use></svg>
-      </a>
-    </footer>
-
-    <dialog class="project-dialog" aria-labelledby="dialog-title">
-      <button class="dialog-close icon-button" type="button" aria-label="Fechar detalhes">
-        <svg class="icon"><use href="#icon-close"></use></svg>
-      </button>
-      <p class="eyebrow">Projeto em destaque</p>
-      <h2 id="dialog-title"></h2>
-      <p class="dialog-description"></p>
-      <div class="tag-list dialog-tags"></div>
-    </dialog>
     <dialog class="certificate-dialog" id="certificate-dialog" aria-labelledby="certificate-title">
       <div class="certificate-header">
         <div>
           <p class="eyebrow">Certificado</p>
-          <h2 id="certificate-title">Git e GitHub — Curso em Vídeo</h2>
+          <h2 id="certificate-title"></h2>
         </div>
         <button class="certificate-close icon-button" type="button" aria-label="Fechar certificado">
           <svg class="icon"><use href="#icon-close"></use></svg>
@@ -343,12 +484,10 @@
       </div>
       <iframe
         class="certificate-viewer"
-        src="certificados/git-e-github.pdf"
-        title="Certificado de Git e GitHub"
+        title="Certificado selecionado"
       ></iframe>
       <a
         class="certificate-open-link"
-        href="certificados/git-e-github.pdf"
         target="_blank"
         rel="noreferrer"
       >
