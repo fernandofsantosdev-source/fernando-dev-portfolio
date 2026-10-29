@@ -18,8 +18,6 @@ const formationCards = document.querySelector(".formation-cards");
 const skillsTabs = [...document.querySelectorAll(".skills-tab")];
 const skillsPanels = skillsTabs.map((tab) => document.getElementById(tab.getAttribute("aria-controls")));
 const skillsTabList = document.querySelector('[role="tablist"][aria-label="Tecnologias e formação"]');
-const skillsPanelHideTimers = new Map();
-let activeSkillsPanel = skillsPanels.find((panel) => !panel.hidden);
 const cinematicSections = [...document.querySelectorAll(".cinematic-section")];
 const welcomeScreen = document.querySelector("#welcome-screen");
 const welcomeSkip = document.querySelector(".welcome-skip");
@@ -78,11 +76,10 @@ function configurePortfolioLinks() {
 
 function configurePresentationMedia() {
   const presentationPlayer = document.querySelector(".presentation-player");
-  const aboutLayout = document.querySelector(".about-layout");
+  const placeholder = presentationPlayer.querySelector(".video-placeholder");
   const { type, src, alt } = portfolioConfig.presentation;
 
   if (!src) {
-    aboutLayout.classList.add("is-copy-only");
     return;
   }
 
@@ -91,13 +88,11 @@ function configurePresentationMedia() {
     mediaUrl = new URL(src, window.location.href);
   } catch (error) {
     console.error("O caminho do vídeo ou da foto de apresentação não é válido.", error);
-    aboutLayout.classList.add("is-copy-only");
     return;
   }
 
   if (!["http:", "https:", "file:"].includes(mediaUrl.protocol)) {
     console.error("A mídia de apresentação precisa usar um arquivo local ou uma URL HTTP/HTTPS.");
-    aboutLayout.classList.add("is-copy-only");
     return;
   }
 
@@ -108,7 +103,6 @@ function configurePresentationMedia() {
   } else if (type === "photo") {
     if (!alt.trim()) {
       console.error("Informe um texto alternativo para a foto de apresentação.");
-      aboutLayout.classList.add("is-copy-only");
       return;
     }
 
@@ -118,13 +112,11 @@ function configurePresentationMedia() {
     photo.hidden = false;
   } else {
     console.error('O tipo de mídia de apresentação deve ser "video" ou "photo".');
-    aboutLayout.classList.add("is-copy-only");
     return;
   }
 
-  presentationPlayer.hidden = false;
+  placeholder.hidden = true;
   presentationPlayer.querySelector(".video-caption").hidden = false;
-  aboutLayout.classList.remove("is-copy-only");
 }
 
 configurePortfolioLinks();
@@ -179,53 +171,14 @@ function activateSkillsTab(selectedTab, moveFocus = false) {
     return;
   }
 
-  const nextPanel = skillsPanels[selectedIndex];
-
-  if (activeSkillsPanel !== nextPanel && activeSkillsPanel) {
-    const activePanel = activeSkillsPanel;
-    activePanel.inert = true;
-    activePanel.setAttribute("aria-hidden", "true");
-
-    const pendingTimer = skillsPanelHideTimers.get(activePanel);
-    if (pendingTimer) {
-      window.clearTimeout(pendingTimer);
-      skillsPanelHideTimers.delete(activePanel);
-    }
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      activePanel.hidden = true;
-      activePanel.classList.remove("is-exiting");
-    } else {
-      activePanel.classList.add("is-exiting");
-      const timer = window.setTimeout(() => {
-        if (activePanel.inert) {
-          activePanel.hidden = true;
-          activePanel.classList.remove("is-exiting");
-        }
-        skillsPanelHideTimers.delete(activePanel);
-      }, 180);
-      skillsPanelHideTimers.set(activePanel, timer);
-    }
-  }
-
-  const pendingTimer = skillsPanelHideTimers.get(nextPanel);
-  if (pendingTimer) {
-    window.clearTimeout(pendingTimer);
-    skillsPanelHideTimers.delete(nextPanel);
-  }
-  nextPanel.hidden = false;
-  nextPanel.inert = false;
-  nextPanel.removeAttribute("aria-hidden");
-  nextPanel.classList.remove("is-exiting");
-  activeSkillsPanel = nextPanel;
-
   skillsTabs.forEach((tab, index) => {
     const isSelected = index === selectedIndex;
     tab.setAttribute("aria-selected", String(isSelected));
     tab.tabIndex = isSelected ? 0 : -1;
+    skillsPanels[index].hidden = !isSelected;
   });
 
-  skillsTabList.classList.toggle("is-formation-active", selectedIndex === 1);
+  skillsTabList.dataset.activeTab = String(selectedIndex);
   if (moveFocus) {
     selectedTab.focus();
   }
@@ -286,7 +239,7 @@ function renderFormationCertificates(certificates) {
       const mark = document.createElement("span");
       mark.className = "formation-provider-mark";
       mark.setAttribute("aria-hidden", "true");
-      mark.textContent = certificate.kind === "Qualidade de software" ? "QA" : "PDF";
+      mark.textContent = "PDF";
       provider.append(mark);
     }
 

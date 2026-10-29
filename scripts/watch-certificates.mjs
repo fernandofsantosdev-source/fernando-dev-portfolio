@@ -27,6 +27,8 @@ const certificateDetails = new Map([
       dialogTitle: "A Jornada do Profissional de QA",
       kind: "Qualidade de software",
       description: "Certificado em PDF",
+      institution: "Impacta",
+      institutionLogo: "assets/impacta-logo.png",
       status: "Concluído",
     },
   ],
