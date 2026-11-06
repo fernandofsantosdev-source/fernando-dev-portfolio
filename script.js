@@ -62,11 +62,6 @@ function setConfiguredUrl(link, value, label) {
 function configurePortfolioLinks() {
   setConfiguredUrl(document.querySelector("#resume-link"), portfolioConfig.resumeUrl, "currículo");
 
-  document.querySelectorAll(".project-showcase-card").forEach((card) => {
-    const repositoryLink = card.querySelector(".project-repository-link");
-    setConfiguredUrl(repositoryLink, card.dataset.repository ?? "", "repositório do projeto");
-  });
-
   const email = portfolioConfig.email.trim();
   if (email) {
     const emailLink = document.querySelector(".contact-email");
@@ -161,16 +156,10 @@ function openCertificate(link, kind = "Certificado") {
   certificateViewer.title = `${kind}: ${title}`;
   certificateViewer.src = source;
   certificateOpenLink.href = source;
-  certificateGithubLink.hidden = kind !== "Projeto";
+  certificateGithubLink.hidden = kind !== "Projeto" || !link.dataset.repository;
   certificateGithubLink.removeAttribute("href");
-  certificateGithubLink.setAttribute("aria-disabled", "true");
-  certificateGithubLink.title = "Envie o link do repositório para ativar";
-  if (kind === "Projeto" && link.dataset.repository) {
-    const repositoryConfigured = setConfiguredUrl(certificateGithubLink, link.dataset.repository, "repositório do projeto");
-    if (repositoryConfigured) {
-      certificateGithubLink.removeAttribute("aria-disabled");
-      certificateGithubLink.removeAttribute("title");
-    }
+  if (!certificateGithubLink.hidden) {
+    setConfiguredUrl(certificateGithubLink, link.dataset.repository, "repositório do projeto");
   }
   certificateCloseButton.setAttribute("aria-label", kind === "Projeto" ? "Fechar projeto" : "Fechar certificado");
   certificateOpenLink.textContent = kind === "Projeto"
@@ -537,23 +526,30 @@ function renderProjectCards() {
   grid.innerHTML = "";
 
   catalog.forEach((project) => {
+    const hasPresentation = Boolean(project.source);
     const card = document.createElement("article");
     card.className = "project-showcase-card reveal";
-    card.tabIndex = 0;
-    card.role = "button";
-    card.setAttribute("aria-label", `Abrir PDF do projeto ${project.title}`);
-    card.dataset.certificateTitle = project.title;
-    card.dataset.certificateSrc = project.source;
-    card.dataset.repository = project.repository || "";
+    if (hasPresentation) {
+      card.tabIndex = 0;
+      card.role = "button";
+      card.setAttribute("aria-label", `Abrir PDF do projeto ${project.title}`);
+      card.dataset.certificateTitle = project.title;
+      card.dataset.certificateSrc = project.source;
+      card.dataset.repository = project.repository || "";
+    }
 
     const statusClass = project.status === "Planejado"
       ? "project-status-planned"
       : project.status === "Concluído"
         ? "project-status-completed"
         : "";
-    const projectPreview = project.title === "Cash Save"
-      ? `<div class="project-mini-preview cashsave-brand-preview" aria-hidden="true"><span>Cash</span><strong>Save</strong></div>`
-      : `
+    const projectPreview = !hasPresentation
+      ? ""
+      : project.title === "AXION"
+        ? `<div class="project-mini-preview axion-brand-preview" aria-hidden="true"><img src="assets/axion-logo.png" alt=""></div>`
+        : project.title === "Cash Save"
+          ? `<div class="project-mini-preview cashsave-brand-preview" aria-hidden="true"><span>Cash</span><strong>Save</strong></div>`
+          : `
         <div class="project-mini-preview pdf-preview" aria-hidden="true">
           <span class="mini-window-bar"><i></i><i></i><i></i></span>
           <span class="pdf-preview-body">
@@ -573,35 +569,36 @@ function renderProjectCards() {
       <p class="project-status ${statusClass}"><span></span> ${project.status}</p>
       <h3>${project.title}</h3>
       <p class="project-card-description">${project.description}</p>
-      <ul class="project-tags" aria-label="Tecnologias usadas">
+      <ul class="project-tags" aria-label="${project.status === "Planejado" ? "Áreas do projeto" : "Tecnologias usadas"}">
         ${(project.tags || []).map((tag) => `<li>${tag}</li>`).join("")}
       </ul>
       <div class="project-card-actions">
-        <button class="button button-primary project-presentation-link" type="button"><svg class="icon"><use href="#icon-arrow"></use></svg> Ver apresentação</button>
-        <a class="button button-outline project-repository-link" href="#" target="_blank" rel="noreferrer" hidden><svg class="icon"><use href="#icon-github"></use></svg> Ver repositório</a>
+        ${hasPresentation ? '<button class="button button-primary project-presentation-link" type="button"><svg class="icon"><use href="#icon-arrow"></use></svg> Ver apresentação</button>' : ""}
         <a class="button button-outline" href="#contato">Contato <svg class="icon"><use href="#icon-arrow"></use></svg></a>
       </div>
     `;
 
-    card.querySelector(".project-presentation-link").addEventListener("click", (event) => {
-      event.stopPropagation();
-      openProjectPdf(card);
-    });
-
-    card.addEventListener("click", (event) => {
-      if (event.target.closest(".button") || event.target.closest(".project-repository-link")) {
-        return;
-      }
-
-      openProjectPdf(card);
-    });
-
-    card.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
+    if (hasPresentation) {
+      card.querySelector(".project-presentation-link").addEventListener("click", (event) => {
+        event.stopPropagation();
         openProjectPdf(card);
-      }
-    });
+      });
+
+      card.addEventListener("click", (event) => {
+        if (event.target.closest(".button")) {
+          return;
+        }
+
+        openProjectPdf(card);
+      });
+
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openProjectPdf(card);
+        }
+      });
+    }
 
     if (revealObserver) {
       revealObserver.observe(card);
@@ -625,7 +622,7 @@ document.addEventListener("click", (event) => {
   }
 
   const projectCard = event.target.closest(".project-showcase-card");
-  const explicitAction = event.target.closest(".button, .project-repository-link, .project-card-actions a");
+  const explicitAction = event.target.closest(".button, .project-card-actions a");
 
   if (projectCard && !explicitAction && projectCard.dataset.certificateSrc && certificateDialog.showModal) {
     event.preventDefault();

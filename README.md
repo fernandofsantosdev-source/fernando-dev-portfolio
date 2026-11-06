@@ -27,15 +27,20 @@ nas configurações do repositório, selecionando a branch e a pasta raiz.
 
 ## Personalização
 
-- Edite os textos, habilidades e projetos em `index.html`.
+- Edite os textos e habilidades em `index.html`. Os cards de projetos são
+  gerados a partir dos PDFs em `projetos/` e dos metadados em
+  `scripts/watch-projects.mjs`; projetos planejados sem apresentação também
+  podem ser cadastrados nesse script.
 - Ajuste cores, layout e animações em `styles.css`.
 - As interações ficam em `script.js`.
 - Configure currículo, e-mail, LinkedIn e mídia da apresentação no objeto
   `portfolioConfig`, no início de `script.js`. Os controles permanecem ocultos
   enquanto os respectivos valores estiverem vazios.
-- Informe o repositório de cada projeto no atributo `data-repository` do card
-  correspondente em `index.html`; o link não aparece enquanto o valor estiver
-  vazio.
+- Para adicionar um projeto com apresentação, copie o PDF para `projetos/` e
+  execute `node scripts/watch-projects.mjs --once` para atualizar
+  `projetos/catalogo.js`. Cadastre título, descrição, status e tecnologias em
+  `scripts/watch-projects.mjs`. Projetos planejados podem ser cadastrados sem
+  PDF; nesse caso, o card não mostra o botão de apresentação.
 - A seção Tecnologias & Formação tem abas para tecnologias, formação acadêmica e
   cursos/certificações. Os certificados encontrados na pasta `certificados/`
   usam os dados e logotipos informados no catálogo, sem atribuir instituição ou
@@ -52,6 +57,6 @@ nas configurações do repositório, selecionando a branch e a pasta raiz.
 - O catálogo publicado fica em `certificados/catalogo.js`. Para regenerá-lo
   antes de publicar, execute `node scripts/watch-certificates.mjs --once`.
   Não edite esse arquivo manualmente.
-- A seção de projetos apresenta o Sistema de Testes Web, o Assistente Financeiro
-  Local e o Dashboard de Vendas. Cada botão de repositório aparece apenas quando
-  seu próprio link está configurado; o botão de contato leva à seção de contato.
+- Os cards de projeto oferecem apresentação quando há PDF e um botão de
+  contato que leva à seção de contato. Quando configurado, o link do GitHub
+  aparece somente na janela de apresentação do projeto.

@@ -6,6 +6,11 @@ const projectDirectory = fileURLToPath(new URL("../", import.meta.url));
 const projectsDirectory = join(projectDirectory, "projetos");
 const catalogPath = join(projectsDirectory, "catalogo.js");
 const isOneShot = process.argv.includes("--once");
+const pdfsWithoutProjectPresentations = new Set([
+  "assistente-financeiro-local.pdf",
+  "dashboard-de-vendas.pdf",
+  "sistema-de-testes-web.pdf",
+]);
 
 const projectDetails = new Map([
   [
@@ -15,37 +20,47 @@ const projectDetails = new Map([
       description: "Aplicação financeira com fluxo organizado em interface, estado e serviços. A apresentação mostra autenticação e dados via Xano, relatórios em PDF com ReportLab e integração opcional com Ollama local.",
       status: "Concluído",
       tags: ["Python", "Reflex", "Xano", "ReportLab", "Ollama (opcional)"],
-      repository: "",
+      repository: "https://github.com/NightBlack5/icashier",
     },
   ],
   [
-    "assistente-financeiro-local.pdf",
+    "axion_apresentacao.pdf",
     {
-      title: "Assistente Financeiro Local",
-      description: "Aplicação desktop para controle financeiro pessoal, com análise de gastos e metas.",
+      title: "AXION",
+      description: "Player IPTV open source para Smart TVs, com uma experiência moderna, simples e fluida. O desenvolvimento começa pela plataforma Samsung Tizen.",
       status: "Em desenvolvimento",
-      tags: ["Python", "SQLite", "PyQt", "Pandas"],
-    },
-  ],
-  [
-    "dashboard-de-vendas.pdf",
-    {
-      title: "Dashboard de Vendas",
-      description: "Painel para visualização de dados de vendas com gráficos e indicadores de desempenho.",
-      status: "Planejado",
-      tags: ["Python", "Power BI", "SQL", "Matplotlib"],
-    },
-  ],
-  [
-    "sistema-de-testes-web.pdf",
-    {
-      title: "Sistema de Testes Web",
-      description: "Plataforma para criação e execução de testes manuais e automatizados, com relatórios e exemplos de testes.",
-      status: "Em desenvolvimento",
-      tags: ["Python", "Selenium", "HTML", "CSS"],
+      tags: ["HTML5", "CSS3", "JavaScript", "Samsung Tizen", "AVPlay", "M3U"],
+      repository: "https://github.com/fernandofsantosdev-source/Axion_IPTV",
     },
   ],
 ]);
+
+const projectsWithoutPresentations = [
+  {
+    title: "NexDesk — Sistema de Help Desk",
+    description: "Sistema para organizar solicitações de suporte, acompanhar chamados e centralizar atendimentos.",
+    status: "Planejado",
+    tags: ["Help Desk", "Chamados", "Suporte", "Atendimento"],
+  },
+  {
+    title: "StockFlow — Gestão de Estoque",
+    description: "Sistema para acompanhar produtos, entradas, saídas e níveis de estoque.",
+    status: "Planejado",
+    tags: ["Estoque", "Produtos", "Entradas e saídas", "Inventário"],
+  },
+  {
+    title: "TaskFlow — Gerenciador de Projetos",
+    description: "Gerenciador para organizar projetos e tarefas e acompanhar o progresso das atividades.",
+    status: "Planejado",
+    tags: ["Projetos", "Tarefas", "Progresso", "Organização"],
+  },
+  {
+    title: "NetVision — Monitoramento de Rede",
+    description: "Sistema para acompanhar a disponibilidade de dispositivos e eventos da rede.",
+    status: "Planejado",
+    tags: ["Redes", "Monitoramento", "Disponibilidade", "Infraestrutura"],
+  },
+];
 
 function escapeCatalogScript(catalog) {
   return `window.portfolioProjects = ${JSON.stringify(catalog).replaceAll("<", "\\u003c")};\n`;
@@ -123,9 +138,10 @@ async function updateCatalog() {
     .filter((entry) => entry.isFile() && extname(entry.name).toLowerCase() === ".pdf")
     .map((entry) => entry.name)
     .filter((fileName) => fileName.toLowerCase() !== "catalogo.js")
+    .filter((fileName) => !pdfsWithoutProjectPresentations.has(fileName.toLowerCase()))
     .sort((first, second) => first.localeCompare(second, "pt-BR", { sensitivity: "base" }));
 
-  const catalog = pdfFiles.map((fileName) => {
+  const projectsFromPdfs = pdfFiles.map((fileName) => {
     const normalizedKey = basename(fileName, extname(fileName)).toLowerCase();
     const explicitDetails = projectDetails.get(normalizedKey + ".pdf") ?? projectDetails.get(normalizedKey.toLowerCase() + ".pdf");
     const title = explicitDetails?.title ?? titleFromFileName(fileName);
@@ -142,6 +158,7 @@ async function updateCatalog() {
       repository: explicitDetails?.repository ?? "",
     };
   });
+  const catalog = [...projectsFromPdfs, ...projectsWithoutPresentations];
 
   const generatedCatalog = escapeCatalogScript(catalog);
   let existingCatalog;

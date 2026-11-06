@@ -1001,25 +1001,6 @@ p {
   line-height: 1.4;
 }
 
-.project-repository-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  margin-top: 12px;
-  color: var(--accent);
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.project-repository-link .icon {
-  width: 16px;
-  height: 16px;
-}
-
-.project-repository-link:hover {
-  color: var(--accent-strong);
-}
-
 .projects-note {
   margin: 14px 0 0;
   color: var(--muted);
@@ -1189,12 +1170,6 @@ p {
 .certificate-github-link .icon {
   width: 16px;
   height: 16px;
-}
-
-.certificate-github-link[aria-disabled="true"] {
-  color: var(--muted);
-  cursor: not-allowed;
-  pointer-events: none;
 }
 
 .certificate-open-link:hover,
@@ -1799,8 +1774,7 @@ body {
 .project-card h3,
 .project-description,
 .project-status,
-.project-card .tag-list,
-.project-card .project-repository-link {
+.project-card .tag-list {
   position: relative;
   z-index: 1;
   max-width: 58%;
@@ -1909,22 +1883,6 @@ body {
   padding: 3px 7px;
   background: rgba(255, 113, 8, .12);
   font-size: 9px;
-}
-
-.project-repository-link {
-  min-height: 28px;
-  align-self: flex-start;
-  margin-top: 10px;
-  padding-inline: 10px;
-  border-color: var(--line);
-  color: var(--text);
-  font-size: 10px;
-}
-
-.project-repository-link .icon {
-  width: 13px;
-  height: 13px;
-  color: var(--accent);
 }
 
 .projects-note {
@@ -4949,6 +4907,20 @@ html {
 .cashsave-brand-preview strong {
   color: #20dfab;
   font-weight: 700;
+}
+
+.axion-brand-preview {
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+}
+
+.axion-brand-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .pdf-preview {
