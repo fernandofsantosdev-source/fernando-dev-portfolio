@@ -27,7 +27,7 @@ const welcomeSkip = document.querySelector(".welcome-skip");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const welcomeFadeDuration = reducedMotion ? 1 : 450;
 const portfolioConfig = {
-  resumeUrl: "",
+  resumeUrl: "curriculo/Curriculo_Fernando_Fernandes_Santos_Trainee.pdf",
   email: "",
   linkedin: "",
   presentation: {

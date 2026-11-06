@@ -33,9 +33,10 @@ nas configurações do repositório, selecionando a branch e a pasta raiz.
   podem ser cadastrados nesse script.
 - Ajuste cores, layout e animações em `styles.css`.
 - As interações ficam em `script.js`.
-- Configure currículo, e-mail, LinkedIn e mídia da apresentação no objeto
-  `portfolioConfig`, no início de `script.js`. Os controles permanecem ocultos
-  enquanto os respectivos valores estiverem vazios.
+- O botão de currículo baixa o PDF em `curriculo/`. Para trocar o arquivo,
+  atualize `portfolioConfig.resumeUrl` no início de `script.js` e o nome no
+  atributo `download` do link em `index.html`. Configure e-mail, LinkedIn e
+  mídia da apresentação no mesmo objeto `portfolioConfig`.
 - Para adicionar um projeto com apresentação, copie o PDF para `projetos/` e
   execute `node scripts/watch-projects.mjs --once` para atualizar
   `projetos/catalogo.js`. Cadastre título, descrição, status e tecnologias em
