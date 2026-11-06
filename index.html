@@ -18,6 +18,7 @@
     >
     <link rel="stylesheet" href="styles.css">
     <script src="certificados/catalogo.js" defer></script>
+    <script src="projetos/catalogo.js" defer></script>
     <script src="script.js" defer></script>
   </head>
   <body>
@@ -215,67 +216,7 @@
               Ver projetos no GitHub <svg class="icon"><use href="#icon-arrow"></use></svg>
             </a>
           </header>
-          <div class="projects-grid">
-            <article class="project-showcase-card reveal" data-repository="">
-              <div class="project-card-heading">
-                <span class="project-icon" aria-hidden="true"><svg class="icon"><use href="#icon-code"></use></svg></span>
-                <div class="project-mini-preview tests-preview" aria-hidden="true">
-                  <span class="mini-window-bar"><i></i><i></i><i></i></span>
-                  <span class="mini-preview-body"><i></i><i></i><i></i><i></i></span>
-                </div>
-              </div>
-              <p class="project-status"><span></span> Em desenvolvimento</p>
-              <h3>Sistema de Testes Web</h3>
-              <p class="project-card-description">Plataforma para criação e execução de testes manuais e automatizados, com relatórios e exemplos de testes.</p>
-              <ul class="project-tags" aria-label="Tecnologias usadas">
-                <li>Python</li><li>Selenium</li><li>HTML</li><li>CSS</li>
-              </ul>
-              <div class="project-card-actions">
-                <a class="button button-outline project-repository-link" href="#" target="_blank" rel="noreferrer" hidden><svg class="icon"><use href="#icon-github"></use></svg> Ver repositório</a>
-                <a class="button button-outline" href="#contato">Contato <svg class="icon"><use href="#icon-arrow"></use></svg></a>
-              </div>
-            </article>
-
-            <article class="project-showcase-card reveal" data-repository="">
-              <div class="project-card-heading">
-                <span class="project-icon" aria-hidden="true"><svg class="icon"><use href="#icon-briefcase"></use></svg></span>
-                <div class="project-mini-preview finance-preview" aria-hidden="true">
-                  <span class="mini-window-bar"><i></i><i></i><i></i></span>
-                  <span class="finance-preview-body"><i></i><i></i><i></i></span>
-                </div>
-              </div>
-              <p class="project-status"><span></span> Em desenvolvimento</p>
-              <h3>Assistente Financeiro Local</h3>
-              <p class="project-card-description">Aplicação desktop para controle financeiro pessoal, com análise de gastos e metas.</p>
-              <ul class="project-tags" aria-label="Tecnologias usadas">
-                <li>Python</li><li>SQLite</li><li>PyQt</li><li>Pandas</li>
-              </ul>
-              <div class="project-card-actions">
-                <a class="button button-outline project-repository-link" href="#" target="_blank" rel="noreferrer" hidden><svg class="icon"><use href="#icon-github"></use></svg> Ver repositório</a>
-                <a class="button button-outline" href="#contato">Contato <svg class="icon"><use href="#icon-arrow"></use></svg></a>
-              </div>
-            </article>
-
-            <article class="project-showcase-card reveal" data-repository="">
-              <div class="project-card-heading">
-                <span class="project-icon" aria-hidden="true"><svg class="icon"><use href="#icon-folder"></use></svg></span>
-                <div class="project-mini-preview sales-preview" aria-hidden="true">
-                  <span class="mini-window-bar"><i></i><i></i><i></i></span>
-                  <span class="sales-preview-body"><i></i><i></i><i></i><i></i></span>
-                </div>
-              </div>
-              <p class="project-status project-status-planned"><span></span> Planejado</p>
-              <h3>Dashboard de Vendas</h3>
-              <p class="project-card-description">Painel para visualização de dados de vendas com gráficos e indicadores.</p>
-              <ul class="project-tags" aria-label="Tecnologias usadas">
-                <li>Python</li><li>Power BI</li><li>SQL</li><li>Matplotlib</li>
-              </ul>
-              <div class="project-card-actions">
-                <a class="button button-outline project-repository-link" href="#" target="_blank" rel="noreferrer" hidden><svg class="icon"><use href="#icon-github"></use></svg> Ver repositório</a>
-                <a class="button button-outline" href="#contato">Contato <svg class="icon"><use href="#icon-arrow"></use></svg></a>
-              </div>
-            </article>
-          </div>
+          <div class="projects-grid" id="projects-grid"></div>
           <p class="projects-note reveal" hidden></p>
         </div>
       </section>
@@ -575,13 +516,19 @@
         class="certificate-viewer"
         title="Certificado selecionado"
       ></iframe>
-      <a
-        class="certificate-open-link"
-        target="_blank"
-        rel="noreferrer"
-      >
-        Abrir certificado em nova aba
-      </a>
+      <div class="certificate-actions">
+        <a class="certificate-github-link" target="_blank" rel="noreferrer">
+          <svg class="icon"><use href="#icon-github"></use></svg>
+          Ver projeto no GitHub
+        </a>
+        <a
+          class="certificate-open-link"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Abrir certificado em nova aba
+        </a>
+      </div>
     </dialog>
     <div class="sr-only" aria-live="polite" id="announcement"></div>
   </body>

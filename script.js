@@ -12,8 +12,11 @@ const pageProgress = document.querySelector(".page-progress span");
 const scrollAtmosphere = document.querySelector(".scroll-atmosphere");
 const certificateDialog = document.querySelector("#certificate-dialog");
 const certificateTitle = document.querySelector("#certificate-title");
+const certificateEyebrow = document.querySelector(".certificate-dialog .eyebrow");
 const certificateViewer = document.querySelector(".certificate-viewer");
 const certificateOpenLink = document.querySelector(".certificate-open-link");
+const certificateGithubLink = document.querySelector(".certificate-github-link");
+const certificateCloseButton = document.querySelector(".certificate-close");
 const formationCards = document.querySelector(".formation-cards");
 const skillsTabs = [...document.querySelectorAll(".skills-tab")];
 const skillsPanels = skillsTabs.map((tab) => document.getElementById(tab.getAttribute("aria-controls")));
@@ -145,7 +148,7 @@ function dismissWelcome() {
   window.setTimeout(() => welcomeScreen.close(), welcomeFadeDuration);
 }
 
-function openCertificate(link) {
+function openCertificate(link, kind = "Certificado") {
   const title = link.dataset.certificateTitle;
   const source = link.dataset.certificateSrc;
 
@@ -153,10 +156,26 @@ function openCertificate(link) {
     throw new Error("Os dados do certificado selecionado estão incompletos.");
   }
 
+  certificateEyebrow.textContent = kind;
   certificateTitle.textContent = title;
-  certificateViewer.title = `Certificado: ${title}`;
+  certificateViewer.title = `${kind}: ${title}`;
   certificateViewer.src = source;
   certificateOpenLink.href = source;
+  certificateGithubLink.hidden = kind !== "Projeto";
+  certificateGithubLink.removeAttribute("href");
+  certificateGithubLink.setAttribute("aria-disabled", "true");
+  certificateGithubLink.title = "Envie o link do repositório para ativar";
+  if (kind === "Projeto" && link.dataset.repository) {
+    const repositoryConfigured = setConfiguredUrl(certificateGithubLink, link.dataset.repository, "repositório do projeto");
+    if (repositoryConfigured) {
+      certificateGithubLink.removeAttribute("aria-disabled");
+      certificateGithubLink.removeAttribute("title");
+    }
+  }
+  certificateCloseButton.setAttribute("aria-label", kind === "Projeto" ? "Fechar projeto" : "Fechar certificado");
+  certificateOpenLink.textContent = kind === "Projeto"
+    ? "Abrir PDF do projeto em nova aba"
+    : "Abrir certificado em nova aba";
   certificateDialog.showModal();
 }
 
@@ -425,8 +444,10 @@ navigation.addEventListener("click", (event) => {
   menuToggle.setAttribute("aria-label", "Abrir menu");
 });
 
+let revealObserver;
+
 if ("IntersectionObserver" in window) {
-  const revealObserver = new IntersectionObserver((entries, observer) => {
+  revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("is-visible");
@@ -484,21 +505,136 @@ themeToggle.addEventListener("click", () => {
   announcement.textContent = isLight ? "Tema claro ativado." : "Tema escuro ativado.";
 });
 
+function openProjectPdf(card) {
+  if (!(card instanceof Element)) {
+    return;
+  }
+
+  const title = card.dataset.certificateTitle;
+  const source = card.dataset.certificateSrc;
+
+  if (!title || !source) {
+    return;
+  }
+
+  openCertificate({
+    dataset: {
+      certificateTitle: title,
+      certificateSrc: source,
+      repository: card.dataset.repository,
+    },
+  }, "Projeto");
+}
+
+function renderProjectCards() {
+  const grid = document.querySelector("#projects-grid");
+  const catalog = window.portfolioProjects || [];
+
+  if (!grid) {
+    return;
+  }
+
+  grid.innerHTML = "";
+
+  catalog.forEach((project) => {
+    const card = document.createElement("article");
+    card.className = "project-showcase-card reveal";
+    card.tabIndex = 0;
+    card.role = "button";
+    card.setAttribute("aria-label", `Abrir PDF do projeto ${project.title}`);
+    card.dataset.certificateTitle = project.title;
+    card.dataset.certificateSrc = project.source;
+    card.dataset.repository = project.repository || "";
+
+    const statusClass = project.status === "Planejado"
+      ? "project-status-planned"
+      : project.status === "Concluído"
+        ? "project-status-completed"
+        : "";
+    const projectPreview = project.title === "Cash Save"
+      ? `<div class="project-mini-preview cashsave-brand-preview" aria-hidden="true"><span>Cash</span><strong>Save</strong></div>`
+      : `
+        <div class="project-mini-preview pdf-preview" aria-hidden="true">
+          <span class="mini-window-bar"><i></i><i></i><i></i></span>
+          <span class="pdf-preview-body">
+            <i class="pdf-fold"></i>
+            <i class="pdf-line short"></i>
+            <i class="pdf-line"></i>
+            <i class="pdf-line medium"></i>
+          </span>
+        </div>
+      `;
+
+    card.innerHTML = `
+      <div class="project-card-heading">
+        <span class="project-icon" aria-hidden="true"><svg class="icon"><use href="#icon-folder"></use></svg></span>
+        ${projectPreview}
+      </div>
+      <p class="project-status ${statusClass}"><span></span> ${project.status}</p>
+      <h3>${project.title}</h3>
+      <p class="project-card-description">${project.description}</p>
+      <ul class="project-tags" aria-label="Tecnologias usadas">
+        ${(project.tags || []).map((tag) => `<li>${tag}</li>`).join("")}
+      </ul>
+      <div class="project-card-actions">
+        <button class="button button-primary project-presentation-link" type="button"><svg class="icon"><use href="#icon-arrow"></use></svg> Ver apresentação</button>
+        <a class="button button-outline project-repository-link" href="#" target="_blank" rel="noreferrer" hidden><svg class="icon"><use href="#icon-github"></use></svg> Ver repositório</a>
+        <a class="button button-outline" href="#contato">Contato <svg class="icon"><use href="#icon-arrow"></use></svg></a>
+      </div>
+    `;
+
+    card.querySelector(".project-presentation-link").addEventListener("click", (event) => {
+      event.stopPropagation();
+      openProjectPdf(card);
+    });
+
+    card.addEventListener("click", (event) => {
+      if (event.target.closest(".button") || event.target.closest(".project-repository-link")) {
+        return;
+      }
+
+      openProjectPdf(card);
+    });
+
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openProjectPdf(card);
+      }
+    });
+
+    if (revealObserver) {
+      revealObserver.observe(card);
+    }
+
+    card.classList.add("is-visible");
+    grid.append(card);
+  });
+}
+
 document.addEventListener("click", (event) => {
   if (!(event.target instanceof Element)) {
     return;
   }
 
   const link = event.target.closest(".certificate-link");
-  if (!link || !certificateDialog.showModal) {
+  if (link && certificateDialog.showModal) {
+    event.preventDefault();
+    openCertificate(link);
     return;
   }
 
-  event.preventDefault();
-  openCertificate(link);
+  const projectCard = event.target.closest(".project-showcase-card");
+  const explicitAction = event.target.closest(".button, .project-repository-link, .project-card-actions a");
+
+  if (projectCard && !explicitAction && projectCard.dataset.certificateSrc && certificateDialog.showModal) {
+    event.preventDefault();
+    openProjectPdf(projectCard);
+  }
 });
 
-document.querySelector(".certificate-close").addEventListener("click", closeCertificate);
+renderProjectCards();
+certificateCloseButton.addEventListener("click", closeCertificate);
 
 certificateDialog.addEventListener("click", (event) => {
   if (event.target === certificateDialog) {
